@@ -1,7 +1,6 @@
-import './App.css';
 import React, { useState, useEffect } from 'react';
 
-const App = () => {
+const Home = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -56,4 +55,4 @@ const App = () => {
   </div>)
 }
 
-export default App;
+export default Home;
