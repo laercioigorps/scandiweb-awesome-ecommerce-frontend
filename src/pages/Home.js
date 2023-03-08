@@ -1,23 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState();
+  const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
+
+  const dataFetch = async () => {
+    const data = await (await fetch("http://127.0.0.1:8000/products")).json();
+
+    // set state when the data received
+    setData(data);
+    setLoaded(true);
+    if (data) {
+      console.log(data);
+    }
+  };
 
   useEffect(() => {
+    if (!loaded) {
+      dataFetch();
+    }
     // fetch data
-    const dataFetch = async () => {
-      const data = await (await fetch("http://127.0.0.1:8000/products")).json();
-
-      // set state when the data received
-      setData(data);
-      if (data) {
-        console.log(data);
-      }
-    };
-
-    dataFetch();
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const productsData = new FormData(e.target);
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: productsData,
+    };
+    fetch("http://127.0.0.1:8000/products/create", requestOptions).then(
+      (response) => {
+        if (response.ok) {
+            dataFetch();
+        } else {
+          console.log(response);
+        }
+      }
+    );
+  };
 
   const listItems = data
     ? data.map((product) => (
@@ -25,7 +50,12 @@ const Home = () => {
           <div className="card m-4">
             <div className="card-body">
               <div>
-                <input type="checkbox" className="delete-checkbox"></input>
+                <input
+                  type="checkbox"
+                  className="delete-checkbox"
+                  value={product.id}
+                  name="product"
+                ></input>
               </div>
               <p className="card-text text-center mb-0">{product.sku}</p>
               <p className="card-text text-center mb-0">{product.name}</p>
@@ -50,10 +80,17 @@ const Home = () => {
           <Link className="btn btn-primary me-2" to="/add-product">
             ADD
           </Link>
-          <input className="btn btn-danger" type="button" value="MASS DELETE" />
+          <input
+            className="btn btn-danger"
+            type="submit"
+            form="delete-form"
+            value="MASS DELETE"
+          />
         </div>
       </div>
-      <div className="row">{listItems}</div>
+      <form id="delete-form" onSubmit={handleSubmit}>
+        <div className="row">{listItems}</div>
+      </form>
     </div>
   );
 };
