@@ -1,72 +1,82 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductAdd = () => {
   const [type, setType] = useState("dvd");
+  const navigate = useNavigate();
 
   const dvdSpecific = (
-    <div class="form-group row mt-4">
-      <label for="size" class="col-sm-2 col-form-label">
+    <div className="form-group row mt-4">
+      <label htmlFor="size" className="col-sm-2 col-form-label">
         Size (MB)
       </label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="size" placeholder="" />
+      <div className="col-sm-10">
+        <input type="text" className="form-control" id="size" placeholder="" />
       </div>
+      <p className="mt-4">*Please, provide size</p>
     </div>
   );
 
   const furnitureSpecific = (
     <>
-      <div class="form-group row mt-4">
-        <label for="height" class="col-sm-2 col-form-label">
+      <div className="form-group row mt-4">
+        <label htmlFor="height" className="col-sm-2 col-form-label">
           Height (CM)
         </label>
-        <div class="col-sm-10">
+        <div className="col-sm-10">
           <input
             type="number"
-            class="form-control"
+            className="form-control"
             id="height"
-            placeholder=""
+            name="height"
+            required
           />
         </div>
       </div>
-      <div class="form-group row mt-4">
-        <label for="width" class="col-sm-2 col-form-label">
+      <div className="form-group row mt-4">
+        <label htmlFor="width" className="col-sm-2 col-form-label">
           Width (CM)
         </label>
-        <div class="col-sm-10">
-          <input type="number" class="form-control" id="width" placeholder="" />
-        </div>
-      </div>
-      <div class="form-group row mt-4">
-        <label for="length" class="col-sm-2 col-form-label">
-          Length (CM)
-        </label>
-        <div class="col-sm-10">
+        <div className="col-sm-10">
           <input
             type="number"
-            class="form-control"
-            id="length"
-            placeholder=""
+            className="form-control"
+            id="width"
+            name="width"
           />
         </div>
+      </div>
+      <div className="form-group row mt-4">
+        <label htmlFor="length" className="col-sm-2 col-form-label">
+          Length (CM)
+        </label>
+        <div className="col-sm-10">
+          <input
+            type="number"
+            className="form-control"
+            id="length"
+            name="length"
+          />
+        </div>
+        <p className="mt-4">*Please, provide dimensions</p>
       </div>
     </>
   );
 
   const bookSpecific = (
-    <div class="form-group row mt-4">
-      <label for="inputEmail3" class="col-sm-2 col-form-label">
+    <div className="form-group row mt-4">
+      <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">
         Wheight (KG)
       </label>
-      <div class="col-sm-10">
+      <div className="col-sm-10">
         <input
           type="text"
-          class="form-control"
-          id="inputEmail3"
+          className="form-control"
+          id="weight"
           placeholder=""
         />
       </div>
+      <p className="mt-4">*Please, provide weight</p>
     </div>
   );
 
@@ -77,6 +87,25 @@ const ProductAdd = () => {
       ? furnitureSpecific
       : bookSpecific;
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("form submited");
+    const data = new FormData(e.target);
+    console.log(data);
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("http://127.0.0.1:8000/products/create", requestOptions).then(
+      (response) => {
+        if (response.ok) {
+          navigate("/");
+        }
+      }
+    );
+  }
+
   return (
     <div className="container">
       <div className="row mt-2">
@@ -86,9 +115,9 @@ const ProductAdd = () => {
         <div className="col-md-2">
           <input
             className="me-2 btn btn-success"
-            type="button"
+            form="product_form"
+            type="submit"
             value="SAVE"
-            onClick={() => alert("clicked")}
           />
           <Link className="btn btn-danger" to="/">
             CANCEL
@@ -96,50 +125,63 @@ const ProductAdd = () => {
         </div>
       </div>
       <div className="row mt-4">
-        <form class="col-md-7">
-          <div class="form-group row">
-            <label for="sku" class="col-sm-2 col-form-label">
+        <form
+          onSubmit={handleSubmit}
+          acion="#"
+          className="col-md-7"
+          id="product_form"
+        >
+          <div className="form-group row">
+            <label htmlFor="sku" className="col-sm-2 col-form-label">
               SKU
             </label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="sku" placeholder="" />
+            <div className="col-sm-10">
+              <input
+                type="text"
+                className="form-control"
+                id="sku"
+                name="sku"
+                required={true}
+              />
             </div>
           </div>
-          <div class="form-group row mt-4">
-            <label for="name" class="col-sm-2 col-form-label">
+          <div className="form-group row mt-4">
+            <label htmlFor="name" className="col-sm-2 col-form-label">
               NAME
             </label>
-            <div class="col-sm-10">
+            <div className="col-sm-10">
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="name"
-                placeholder=""
+                name="name"
               />
             </div>
           </div>
-          <div class="form-group row mt-4">
-            <label for="price" class="col-sm-2 col-form-label">
+          <div className="form-group row mt-4">
+            <label htmlFor="price" className="col-sm-2 col-form-label">
               PRICE ($)
             </label>
-            <div class="col-sm-10">
+            <div className="col-sm-10">
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 id="price"
-                placeholder=""
+                name="price"
+                required
               />
             </div>
           </div>
-          <div class="form-group row mt-4">
-            <label for="productType" class="col-sm-2 col-form-label">
+          <div className="form-group row mt-4">
+            <label htmlFor="productType" className="col-sm-2 col-form-label">
               Type Switcher
             </label>
-            <div class="col-sm-10">
+            <div className="col-sm-10">
               <select
-                class="form-select"
+                className="form-select"
                 id="productType"
                 onChange={(e) => setType(e.target.value)}
+                name="type"
               >
                 <option value="dvd">DVD</option>
                 <option value="book">Book</option>
