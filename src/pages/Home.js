@@ -21,7 +21,7 @@ const Home = () => {
 
   const listItems = data
     ? data.map((product) => (
-        <div className="col-md-3" key={product.sku}>
+        <div className="col-md-3" key={product.id}>
           <div className="card m-4">
             <div className="card-body">
               <div>
