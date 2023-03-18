@@ -1,17 +1,102 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 
 const ProductAdd = () => {
   const [type, setType] = useState("dvd");
+  const [errors, setErrors] = useState();
   const navigate = useNavigate();
 
+  const skuErrors =
+    errors && errors.sku
+      ? errors.sku.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+  const nameErrors =
+    errors && errors.name
+      ? errors.name.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+  const priceErrors =
+    errors && errors.price
+      ? errors.price.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+  const typeErrors =
+    errors && errors.type
+      ? errors.type.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+
+  const sizeErrors =
+    errors && errors.size
+      ? errors.size.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+
+  const weightErrors =
+    errors && errors.weight
+      ? errors.weight.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+
+  const heightErrors =
+    errors && errors.height
+      ? errors.height.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+  const widthErrors =
+    errors && errors.width
+      ? errors.width.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+  const lengthErrors =
+    errors && errors.length
+      ? errors.length.map((error, index) => (
+          <p key={index} className="text-danger m-0">
+            *{error}
+          </p>
+        ))
+      : "";
+
   const dvdSpecific = (
-    <div className="form-group row mt-4">
+    <div className="form-group row mt-4 has-validation">
       <label htmlFor="size" className="col-sm-2 col-form-label">
         Size (MB)
       </label>
       <div className="col-sm-10">
-        <input type="text" className="form-control" id="size" placeholder="" />
+        <input
+          type="text"
+          className={`form-control ${sizeErrors ? "is-invalid" : ""}`}
+          id="size"
+          name="size"
+          placeholder=""
+          aria-describedby="sizeFeedback"
+        />
+        {sizeErrors}
       </div>
       <p className="mt-4">*Please, provide size</p>
     </div>
@@ -26,11 +111,12 @@ const ProductAdd = () => {
         <div className="col-sm-10">
           <input
             type="number"
-            className="form-control"
+            className={`form-control ${heightErrors ? "is-invalid" : ""}`}
             id="height"
             name="height"
-            required
+            //required
           />
+          {heightErrors}
         </div>
       </div>
       <div className="form-group row mt-4">
@@ -40,10 +126,11 @@ const ProductAdd = () => {
         <div className="col-sm-10">
           <input
             type="number"
-            className="form-control"
+            className={`form-control ${widthErrors ? "is-invalid" : ""}`}
             id="width"
             name="width"
           />
+          {widthErrors}
         </div>
       </div>
       <div className="form-group row mt-4">
@@ -53,10 +140,11 @@ const ProductAdd = () => {
         <div className="col-sm-10">
           <input
             type="number"
-            className="form-control"
+            className={`form-control ${lengthErrors ? "is-invalid" : ""}`}
             id="length"
             name="length"
           />
+          {lengthErrors}
         </div>
         <p className="mt-4">*Please, provide dimensions</p>
       </div>
@@ -71,10 +159,12 @@ const ProductAdd = () => {
       <div className="col-sm-10">
         <input
           type="text"
-          className="form-control"
+          className={`form-control ${weightErrors ? "is-invalid" : ""}`}
           id="weight"
+          name="weight"
           placeholder=""
         />
+        {weightErrors}
       </div>
       <p className="mt-4">*Please, provide weight</p>
     </div>
@@ -90,17 +180,26 @@ const ProductAdd = () => {
   function handleSubmit(e) {
     e.preventDefault();
     console.log("form submited");
-    const data = new FormData(e.target);
-    console.log(data);
+    const myForm = new FormData(e.target);
+    var object = {};
+    myForm.forEach((value, key) => (object[key] = value));
+    var json = JSON.stringify(object);
+    console.log(json);
 
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: json,
     };
     fetch("http://127.0.0.1:8000/products/create", requestOptions).then(
       (response) => {
         if (response.ok) {
           navigate("/");
+        } else {
+          response.json().then((text) => {
+            setErrors(text.errors);
+            console.log(text.errors);
+          });
         }
       }
     );
@@ -138,11 +237,12 @@ const ProductAdd = () => {
             <div className="col-sm-10">
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${skuErrors ? "is-invalid" : ""}`}
                 id="sku"
                 name="sku"
-                required={true}
+                //required={true}
               />
+              {skuErrors}
             </div>
           </div>
           <div className="form-group row mt-4">
@@ -152,10 +252,11 @@ const ProductAdd = () => {
             <div className="col-sm-10">
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${nameErrors ? "is-invalid" : ""}`}
                 id="name"
                 name="name"
               />
+              {nameErrors}
             </div>
           </div>
           <div className="form-group row mt-4">
@@ -165,11 +266,12 @@ const ProductAdd = () => {
             <div className="col-sm-10">
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${priceErrors ? "is-invalid" : ""}`}
                 id="price"
                 name="price"
-                required
+                //required
               />
+              {priceErrors}
             </div>
           </div>
           <div className="form-group row mt-4">
@@ -178,7 +280,7 @@ const ProductAdd = () => {
             </label>
             <div className="col-sm-10">
               <select
-                className="form-select"
+                className={`form-select ${typeErrors ? "is-invalid" : ""}`}
                 id="productType"
                 onChange={(e) => setType(e.target.value)}
                 name="type"
@@ -187,6 +289,7 @@ const ProductAdd = () => {
                 <option value="book">Book</option>
                 <option value="furniture">Furniture</option>
               </select>
+              {typeErrors}
             </div>
           </div>
           {typeSpecific}
