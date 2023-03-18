@@ -26,17 +26,23 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const productsData = new FormData(e.target);
+    var products_id = [];
+    const myForm = new FormData(e.target);
+    myForm.forEach((value, key) => {
+      products_id.push(value);
+    });
+    const json = JSON.stringify({ products_id: products_id });
+    console.log(json);
 
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: productsData,
+      body: json,
     };
-    fetch("http://127.0.0.1:8000/products/create", requestOptions).then(
+    fetch("http://127.0.0.1:8000/products/delete", requestOptions).then(
       (response) => {
         if (response.ok) {
-            dataFetch();
+          dataFetch();
         } else {
           console.log(response);
         }
