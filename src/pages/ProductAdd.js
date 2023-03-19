@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { json, Link, useNavigate } from "react-router-dom";
 
+const BACKEND_URL = "https://backend.awesome-scandiweb.shop";
+
 const ProductAdd = () => {
   const [type, setType] = useState("dvd");
   const [errors, setErrors] = useState();
@@ -191,7 +193,7 @@ const ProductAdd = () => {
       headers: { "Content-Type": "application/json" },
       body: json,
     };
-    fetch("http://127.0.0.1:8000/products/create", requestOptions).then(
+    fetch(`${BACKEND_URL}/products/create`, requestOptions).then(
       (response) => {
         if (response.ok) {
           navigate("/");

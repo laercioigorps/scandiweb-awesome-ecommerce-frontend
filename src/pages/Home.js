@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const BACKEND_URL = "https://backend.awesome-scandiweb.shop";
+
 const Home = () => {
   const [data, setData] = useState();
   const [loaded, setLoaded] = useState(false);
   const navigate = useNavigate();
 
   const dataFetch = async () => {
-    const data = await (await fetch("http://127.0.0.1:8000/products")).json();
+    const data = await (await fetch(`${BACKEND_URL}/products`)).json();
 
     // set state when the data received
     setData(data);
@@ -39,7 +41,7 @@ const Home = () => {
       headers: { "Content-Type": "application/json" },
       body: json,
     };
-    fetch("http://127.0.0.1:8000/products/delete", requestOptions).then(
+    fetch(`${BACKEND_URL}/products/delete`, requestOptions).then(
       (response) => {
         if (response.ok) {
           dataFetch();
