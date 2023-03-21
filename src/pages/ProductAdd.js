@@ -193,18 +193,16 @@ const ProductAdd = () => {
       headers: { "Content-Type": "application/json" },
       body: json,
     };
-    fetch(`${BACKEND_URL}/products/create`, requestOptions).then(
-      (response) => {
-        if (response.ok) {
-          navigate("/");
-        } else {
-          response.json().then((text) => {
-            setErrors(text.errors);
-            console.log(text.errors);
-          });
-        }
+    fetch(`${BACKEND_URL}/products/create`, requestOptions).then((response) => {
+      if (response.ok) {
+        navigate("/");
+      } else {
+        response.json().then((text) => {
+          setErrors(text.errors);
+          console.log(text.errors);
+        });
       }
-    );
+    });
   }
 
   return (
@@ -218,10 +216,10 @@ const ProductAdd = () => {
             className="me-2 btn btn-success"
             form="product_form"
             type="submit"
-            value="SAVE"
+            value="Save"
           />
           <Link className="btn btn-danger" to="/">
-            CANCEL
+            Cancel
           </Link>
         </div>
       </div>
@@ -287,9 +285,15 @@ const ProductAdd = () => {
                 onChange={(e) => setType(e.target.value)}
                 name="type"
               >
-                <option value="dvd">DVD</option>
-                <option value="book">Book</option>
-                <option value="furniture">Furniture</option>
+                <option id="DVD" value="dvd">
+                  DVD
+                </option>
+                <option id="Book" value="book">
+                  Book
+                </option>
+                <option id="Furniture" value="furniture">
+                  Furniture
+                </option>
               </select>
               {typeErrors}
             </div>
