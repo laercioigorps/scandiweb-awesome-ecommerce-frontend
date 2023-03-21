@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const BACKEND_URL = "https://backend.awesome-scandiweb.shop";
+//const BACKEND_URL = "http://127.0.0.1:8000";
 
 const Home = () => {
   const [data, setData] = useState();
   const [loaded, setLoaded] = useState(false);
-  const navigate = useNavigate();
 
   const dataFetch = async () => {
     const data = await (await fetch(`${BACKEND_URL}/products`)).json();
@@ -41,15 +41,13 @@ const Home = () => {
       headers: { "Content-Type": "application/json" },
       body: json,
     };
-    fetch(`${BACKEND_URL}/products/delete`, requestOptions).then(
-      (response) => {
-        if (response.ok) {
-          dataFetch();
-        } else {
-          console.log(response);
-        }
+    fetch(`${BACKEND_URL}/products/delete`, requestOptions).then((response) => {
+      if (response.ok) {
+        dataFetch();
+      } else {
+        console.log(response);
       }
-    );
+    });
   };
 
   const listItems = data
