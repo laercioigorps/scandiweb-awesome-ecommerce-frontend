@@ -24,7 +24,7 @@ const ProductFurnitureSpecific = (props) => {
         </label>
         <div className="col-sm-10">
           <input
-            type="number"
+            type="text"
             className={`form-control ${heightErrors ? "is-invalid" : ""}`}
             id="height"
             name="height"
@@ -38,7 +38,7 @@ const ProductFurnitureSpecific = (props) => {
         </label>
         <div className="col-sm-10">
           <input
-            type="number"
+            type="text"
             className={`form-control ${widthErrors ? "is-invalid" : ""}`}
             id="width"
             name="width"
@@ -52,7 +52,7 @@ const ProductFurnitureSpecific = (props) => {
         </label>
         <div className="col-sm-10">
           <input
-            type="number"
+            type="text"
             className={`form-control ${lengthErrors ? "is-invalid" : ""}`}
             id="length"
             name="length"
