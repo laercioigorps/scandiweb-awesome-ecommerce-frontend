@@ -4,7 +4,7 @@ import ProductDVDSpecific from "./productSpecific/ProductDVDSpecific";
 import ProductFurnitureSpecific from "./productSpecific/ProductFurnitureSpecific";
 
 const ProductForm = (props) => {
-  const [type, setType] = useState("dvd");
+  const [type, setType] = useState("");
 
   function getErrors(field) {
     return props.errors && field
@@ -26,9 +26,10 @@ const ProductForm = (props) => {
       <ProductDVDSpecific errors={props.errors} />
     ) : type === "furniture" ? (
       <ProductFurnitureSpecific errors={props.errors} />
-    ) : (
+    ) : type === "book" ?(
       <ProductBookSpecific errors={props.errors} />
-    );
+    ) :
+      "";
 
   return (
     <form
@@ -90,6 +91,9 @@ const ProductForm = (props) => {
             onChange={(e) => setType(e.target.value)}
             name="type"
           >
+            <option id="" value="">
+              Type Switcher 
+            </option>
             <option id="DVD" value="dvd">
               DVD
             </option>
